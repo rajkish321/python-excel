@@ -1,6 +1,7 @@
 import os
 import xlsxwriter
 import xlrd
+import urllib.request
 
 
 
@@ -9,6 +10,20 @@ base_dir = os.path.dirname(os.path.dirname(__file__))
 
 sheets_dir = base_dir+r"/sheets/"
 
+
+f = open(base_dir + r'/urls.txt')
+urls =[]
+for s in f:
+    print(s)
+    urls.append(s)
+
+
+for i in range(len(urls)):
+
+    urllib.request.urlretrieve(urls[i], sheets_dir +r'/file{}.xlsx'.format(i+1))
+
+
+
 col_one = 7 #COL H
 col_two = col_three = 4 # COL E
 col_four = 3 #COL D
@@ -16,23 +31,31 @@ col_four = 3 #COL D
 
 sheets = os.listdir(sheets_dir)
 
+#assigning variables to the correct documents
 one = two = three = four = ''
 for item in sheets:
-    if item[0:3] == 'one':
+
+    if item[-6] == '1':
         one = item
-    if item[0:3] == 'two':
+    if item[-6] == '2':
         two = item
-    if item[0:3] == 'thr':
+    if item[-6] == '3':
         three = item
-    if item[0:3] == 'fou':
+    if item[-6] == '4':
         four = item
 
 data = []
 
 sheet1 = xlrd.open_workbook(sheets_dir + one).sheet_by_index(0)
 data1 = sheet1.col_values(col_one)
-data.append(data1[7:])
-print(data1)
+data1_fin = [data1[7]]
+data1 = data1[8:]
+data1 = list(set(data1))
+data1.sort()
+
+data1_fin = data1_fin + data1
+data.append(data1_fin)
+print(data1_fin)
 
 sheet2 = xlrd.open_workbook(sheets_dir + two).sheet_by_index(0)
 data2 = sheet2.col_values(col_two)
@@ -57,6 +80,8 @@ col = 0
 for doc in data:
     row = 0
     for item in doc:
+        item = str(item)
+        item = item.replace(', ', ',')
         worksheet.write(row,col,item)
         row += 1
     col += 1
