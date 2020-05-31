@@ -6,8 +6,7 @@ import urllib.request
 
 
 
-base_dir = os.path.dirname(os.path.dirname(__file__))
-
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sheets_dir = base_dir+r"/sheets/"
 
 
