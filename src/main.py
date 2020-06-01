@@ -1,13 +1,19 @@
-import os
 import xlsxwriter
 import xlrd
 import urllib.request
+# from record import *
+from movement import *
 
 
 
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sheets_dir = base_dir+r"/sheets/"
+
+
+replay()
+
+
 
 
 f = open(base_dir + r'/urls.txt')
