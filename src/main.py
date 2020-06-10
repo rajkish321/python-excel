@@ -1,9 +1,10 @@
 import xlsxwriter
 import xlrd
 import urllib.request
+import os
 # from record import *
-from movement import *
-
+# from movement import *
+import xlwings as xw
 
 
 
@@ -11,11 +12,7 @@ base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sheets_dir = base_dir+r"/sheets/"
 
 
-replay()
-
-
-
-
+# replay()
 f = open(base_dir + r'/urls.txt')
 urls =[]
 for s in f:
@@ -50,6 +47,29 @@ for item in sheets:
         four = item
 
 data = []
+
+# sheet1 =
+workbook = xlsxwriter.Workbook(base_dir + r'/outputSheet/output3.xlsx')
+
+workbook.close()
+
+# from win32com.client import Dispatch
+#
+path1 = sheets_dir + one
+path2 = base_dir + r'/outputSheet/output.xlsx'
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 sheet1 = xlrd.open_workbook(sheets_dir + one).sheet_by_index(0)
 data1 = sheet1.col_values(col_one)
@@ -102,3 +122,15 @@ for i in range(2,len(data1)):
 
 
 workbook.close()
+
+
+wb = xw.Book(path1)
+sht = wb.sheets['sheet1']
+new_wb = xw.Book(path2)
+print("----------------------")
+new_sht = new_wb.sheets[0]
+sht.api.Copy(Before = new_sht.api)
+print(new_wb.sheets)
+new_wb.sheets[0].name = "original"
+new_wb.save()
+wb.app.quit()
